@@ -2450,8 +2450,19 @@ function QB({
   day,
   dis
 }) {
+  const lastTap = React.useRef(0);
+  const handleDoubleTap = () => {
+    if (done || dis) return;
+    const now = Date.now();
+    if (now - lastTap.current < 350) {
+      onTap(q);
+      lastTap.current = 0;
+    } else {
+      lastTap.current = now;
+    }
+  };
   return /*#__PURE__*/React.createElement("div", {
-    onPointerDown: () => !done && !dis && onTap(q),
+    onPointerDown: handleDoubleTap,
     style: {
       margin: "2px 10px",
       padding: "8px 10px",
